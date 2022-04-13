@@ -4,17 +4,23 @@
 import glob
 import os
 
-import torch
 from setuptools import find_packages
 from setuptools import setup
-from torch.utils.cpp_extension import CUDA_HOME
-from torch.utils.cpp_extension import CppExtension
-from torch.utils.cpp_extension import CUDAExtension
 
 requirements = ["torch", "torchvision"]
 
+def get_build_extension(): 
+    from torch.utils.cpp_extension import BuildExtension
+
+    return BuildExtension
+
 
 def get_extensions():
+    import torch
+    from torch.utils.cpp_extension import CUDA_HOME
+    from torch.utils.cpp_extension import CppExtension
+    from torch.utils.cpp_extension import CUDAExtension
+
     this_dir = os.path.dirname(os.path.abspath(__file__))
     extensions_dir = os.path.join(this_dir, "maskrcnn_benchmark", "csrc")
 
@@ -63,7 +69,7 @@ setup(
     url="https://github.com/facebookresearch/maskrcnn-benchmark",
     description="object detection in pytorch",
     packages=find_packages(exclude=("configs", "tests",)),
-    # install_requires=requirements,
+    install_requires=requirements,
     ext_modules=get_extensions(),
-    cmdclass={"build_ext": torch.utils.cpp_extension.BuildExtension},
+    cmdclass={"build_ext": get_build_extension()},
 )
