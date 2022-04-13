@@ -7,16 +7,12 @@ import os
 from setuptools import find_packages
 from setuptools import setup
 
-requirements = ["rich", "torch", "torchvision"]
+requirements = ["torch", "torchvision"]
 
 def get_build_extension(): 
     from torch.utils.cpp_extension import BuildExtension
 
     return BuildExtension
-
-def update_torch(): 
-    from .update_torch_cuda import main
-    main(True)
 
 def get_extensions():
     import torch
